@@ -14,10 +14,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 include_once(ABSPATH.'wp-admin/includes/plugin.php');
 
-if( ! class_exists( 'WP_List_Table' ) ) {
-	require_once( ABSPATH . 'wp-admin/includes/class-wp-list-table.php' );
-}
-
 if(is_admin()){
 	new custom_wp_list_table();
 }
@@ -34,14 +30,14 @@ final class custom_wp_list_table {
 
 	}
 
-	protected function woocommerce_active() {
+	public function woocommerce_active() {
 		add_action( 'admin_notices', function () {
 			echo '<div class="notice notice-error">This plugin requires WooCommerce plugin in order to run. Kindly install it.</div>';
 		} );
 	}
 
 	public function add_menu_custom_table_page(){
-		add_menu_page( 'Custom List Table', 'Custom List Table', 'manage_options', 'custom-list-table.php', array($this, 'create_table') );
+		add_menu_page( 'Custom List Table', 'Custom List Table', 'manage_options', 'custom-list-table', array($this, 'create_table') );
 	}
 
 	public function create_table(){
@@ -50,7 +46,7 @@ final class custom_wp_list_table {
 		?>
 		<div class="wrap">
 			<div id="icon-users" class="icon32"></div>
-			<h2>custom List Table Page</h2>
+			<h2>Product Table Page</h2>
 			<form method="post">
 			<?php
 				$listTable->search_box( 'Search', 'search' );
@@ -66,6 +62,11 @@ final class custom_wp_list_table {
 /**
  * Create a new table class that will extend the WP_List_Table
  */
+
+if( ! class_exists( 'WP_List_Table' ) ) {
+	require_once( ABSPATH . 'wp-admin/includes/class-wp-list-table.php' );
+}
+
 class custom_list_table extends WP_List_Table {
 	public $per_page = 10;
 
